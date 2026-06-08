@@ -9,7 +9,12 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
 body{
 background:#0b1220;
@@ -31,11 +36,11 @@ color:#60a5fa;
 
 .topbar{
 display:flex;
-gap:10px;
-padding:10px;
-background:#111827;
 flex-wrap:wrap;
+gap:10px;
 justify-content:center;
+padding:12px;
+background:#111827;
 }
 
 .topbar input{
@@ -49,14 +54,14 @@ min-width:180px;
 padding:10px 15px;
 border:none;
 border-radius:8px;
-cursor:pointer;
 background:#2563eb;
 color:white;
+cursor:pointer;
 }
 
 .container{
 display:grid;
-grid-template-columns:1.4fr 1fr;
+grid-template-columns:1.5fr 1fr;
 gap:12px;
 padding:12px;
 height:calc(100vh - 170px);
@@ -88,39 +93,38 @@ margin-bottom:10px;
 
 .btn{
 display:block;
+text-align:center;
 text-decoration:none;
 background:#2563eb;
 color:white;
 padding:10px;
 border-radius:8px;
 margin-top:8px;
-text-align:center;
 }
 
 .coords{
 margin-top:10px;
-font-size:14px;
 color:#93c5fd;
-word-break:break-all;
-}
-
-.copybtn{
-margin-top:8px;
-width:100%;
+word-break:break-word;
 }
 
 @media(max-width:1000px){
+
 .container{
 grid-template-columns:1fr;
 height:auto;
 }
+
 #map{
 height:500px;
 }
+
 .sidebar{
 grid-template-columns:1fr;
 }
+
 }
+
 </style>
 </head>
 <body>
@@ -132,7 +136,7 @@ grid-template-columns:1fr;
 
 <div class="topbar">
 
-<input id="searchBox" placeholder="Search city or country">
+<input id="searchBox" placeholder="Search city">
 
 <button onclick="searchPlace()">Search</button>
 
@@ -140,7 +144,7 @@ grid-template-columns:1fr;
 
 <input id="lonBox" placeholder="Longitude">
 
-<button onclick="goToCoords()">Go To Coordinates</button>
+<button onclick="goToCoords()">Go</button>
 
 </div>
 
@@ -152,47 +156,61 @@ grid-template-columns:1fr;
 
 <div class="card">
 <h3>🔥 NASA FIRMS</h3>
-<a class="btn" href="https://firms.modaps.eosdis.nasa.gov/map/" target="_blank">Open NASA FIRMS</a>
+<a class="btn" href="https://firms.modaps.eosdis.nasa.gov/map/" target="_blank">
+Open NASA FIRMS
+</a>
 </div>
 
 <div class="card">
 <h3>🛰️ LandViewer</h3>
-<a class="btn" href="https://eos.com/landviewer/" target="_blank">Open LandViewer</a>
+<a class="btn" href="https://eos.com/landviewer/" target="_blank">
+Open LandViewer
+</a>
 </div>
 
 <div class="card">
 <h3>✈️ Telegram</h3>
-<a class="btn" href="https://web.telegram.org" target="_blank">Open Telegram</a>
+<a class="btn" href="https://web.telegram.org" target="_blank">
+Open Telegram
+</a>
 </div>
 
 <div class="card">
 <h3>𝕏 X</h3>
-<a class="btn" href="https://x.com" target="_blank">Open X</a>
+<a class="btn" href="https://x.com" target="_blank">
+Open X
+</a>
 </div>
 
 <div class="card">
 <h3>📊 INSS</h3>
-<a class="btn" href="https://www.inss.org.il/" target="_blank">Open INSS</a>
+<a class="btn" href="https://www.inss.org.il/" target="_blank">
+Open INSS
+</a>
 </div>
 
 <div class="card">
 <h3>🇦🇪 ECSSR</h3>
-<a class="btn" href="https://www.ecssr.ae/en/home" target="_blank">Open ECSSR</a>
+<a class="btn" href="https://www.ecssr.ae/en/home" target="_blank">
+Open ECSSR
+</a>
 </div>
 
 <div class="card">
 <h3>📍 Coordinates</h3>
 
 <div id="coords" class="coords">
-Click anywhere on the map
+Click on map
 </div>
 
-<button class="btn copybtn" onclick="copyCoords()">
+<button class="btn" onclick="copyCoords()">
 Copy Coordinates
 </button>
+
 </div>
 
 </div>
+
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -201,15 +219,49 @@ Copy Coordinates
 
 const map = L.map('map').setView([24,54],4);
 
-L.tileLayer(
+const street = L.tileLayer(
 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-{maxZoom:19}
-).addTo(map);
+{
+maxZoom:19
+}
+);
+
+const topo = L.tileLayer(
+'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+{
+maxZoom:17
+}
+);
+
+const dark = L.tileLayer(
+'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
+{
+maxZoom:20
+}
+);
+
+const satellite = L.tileLayer(
+'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+{
+maxZoom:19
+}
+);
+
+street.addTo(map);
+
+const baseMaps = {
+"Street Map": street,
+"Topographic": topo,
+"Dark Mode": dark,
+"Satellite": satellite
+};
+
+L.control.layers(baseMaps).addTo(map);
 
 let marker;
 let currentCoords="";
 
-map.on('click',function(e){
+map.on('click', function(e){
 
 const lat=e.latlng.lat.toFixed(6);
 const lon=e.latlng.lng.toFixed(6);
@@ -233,6 +285,7 @@ if(!currentCoords) return;
 navigator.clipboard.writeText(currentCoords);
 
 alert("Coordinates copied");
+
 }
 
 function goToCoords(){
@@ -258,15 +311,14 @@ const q=document.getElementById("searchBox").value;
 
 if(!q) return;
 
-const url=
-"https://nominatim.openstreetmap.org/search?format=json&q="
-+ encodeURIComponent(q);
-
-const res=await fetch(url);
+const res=await fetch(
+'https://nominatim.openstreetmap.org/search?format=json&q='
++ encodeURIComponent(q)
+);
 
 const data=await res.json();
 
-if(data.length===0){
+if(!data.length){
 alert("Location not found");
 return;
 }
@@ -285,7 +337,7 @@ marker=L.marker([lat,lon]).addTo(map);
 }
 
 function updateClock(){
-document.getElementById("clock").innerHTML=
+document.getElementById("clock").innerHTML =
 new Date().toUTCString();
 }
 
