@@ -1,0 +1,23 @@
+```html
+<!DOCTYPE html>
+<html>
+<body>
+<h2>RSS Test</h2>
+<div id="out">Loading...</div>
+
+<script>
+fetch("https://rss.app/feeds/gYNCvPrdFt7GIoOI.xml")
+.then(r => r.text())
+.then(t => {
+document.getElementById("out").innerText =
+"SUCCESS: " + t.substring(0,200);
+})
+.catch(e => {
+document.getElementById("out").innerText =
+"ERROR: " + e;
+});
+</script>
+
+</body>
+</html>
+```
