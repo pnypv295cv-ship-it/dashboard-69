@@ -1,9 +1,12 @@
+```html
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Operations Dashboard</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
 *{
@@ -13,151 +16,165 @@ box-sizing:border-box;
 }
 
 body{
-font-family:Arial,sans-serif;
 background:#0b1220;
+font-family:Arial,sans-serif;
 color:white;
-min-height:100vh;
 }
 
-.header{
-padding:25px;
+header{
+padding:20px;
 text-align:center;
-background:#111827;
-border-bottom:1px solid #1f2937;
+border-bottom:1px solid #222;
 }
 
-.header h1{
+header h1{
 font-size:32px;
 }
 
-.header p{
-margin-top:8px;
-color:#9ca3af;
+#clock{
+margin-top:10px;
+color:#60a5fa;
 }
 
-.grid{
+.container{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:20px;
-padding:25px;
-max-width:1400px;
-margin:auto;
+grid-template-columns:2fr 1fr;
+gap:15px;
+padding:15px;
+height:calc(100vh - 100px);
+}
+
+#map{
+height:100%;
+border-radius:12px;
+overflow:hidden;
+}
+
+.sidebar{
+display:flex;
+flex-direction:column;
+gap:12px;
 }
 
 .card{
 background:#111827;
 border:1px solid #1f2937;
-border-radius:16px;
-padding:25px;
-transition:0.3s;
+border-radius:12px;
+padding:15px;
 }
 
-.card:hover{
-transform:translateY(-5px);
-border-color:#3b82f6;
+.card h3{
+margin-bottom:10px;
 }
 
-.card h2{
-margin-bottom:15px;
-font-size:22px;
-}
-
-.card a{
-display:inline-block;
-margin-top:10px;
+.btn{
+display:block;
 text-decoration:none;
 background:#2563eb;
 color:white;
-padding:10px 18px;
-border-radius:10px;
+padding:10px;
+margin-top:8px;
+border-radius:8px;
+text-align:center;
 }
 
-.card a:hover{
+.btn:hover{
 background:#1d4ed8;
 }
 
-.footer{
-text-align:center;
-padding:20px;
-color:#9ca3af;
+.links{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
 }
 
-.clock{
-font-size:18px;
-margin-top:10px;
-color:#60a5fa;
+footer{
+text-align:center;
+padding:10px;
+color:#999;
 }
 </style>
-
 </head>
 
 <body>
 
-<div class="header">
-<h1>🌍 Personal Operations Dashboard</h1>
-<p>Monitoring & Intelligence Workspace</p>
-<div class="clock" id="clock"></div>
-</div>
+<header>
+<h1>🌍 Operations Dashboard</h1>
+<div id="clock"></div>
+</header>
 
-<div class="grid">
+<div class="container">
 
-<div class="card">
-<h2>🔥 NASA FIRMS</h2>
-<p>Satellite fire monitoring.</p>
-<a href="https://firms.modaps.eosdis.nasa.gov/map/" target="_blank">Open</a>
-</div>
+<div id="map"></div>
+
+<div class="sidebar">
 
 <div class="card">
-<h2>🗺️ Google Maps</h2>
-<p>Global mapping and navigation.</p>
-<a href="https://maps.google.com" target="_blank">Open</a>
-</div>
+<h3>🔥 Monitoring</h3>
 
-<div class="card">
-<h2>🛰️ LandViewer</h2>
-<p>Satellite imagery platform.</p>
-<a href="https://eos.com/landviewer/" target="_blank">Open</a>
+<a class="btn" href="https://firms.modaps.eosdis.nasa.gov/map/" target="_blank">
+NASA FIRMS
+</a>
+
+<a class="btn" href="https://eos.com/landviewer/" target="_blank">
+LandViewer
+</a>
 </div>
 
 <div class="card">
-<h2>✈️ Telegram</h2>
-<p>Messaging and alerts.</p>
-<a href="https://web.telegram.org" target="_blank">Open</a>
+<h3>📡 Communications</h3>
+
+<a class="btn" href="https://web.telegram.org" target="_blank">
+Telegram
+</a>
+
+<a class="btn" href="https://x.com" target="_blank">
+X
+</a>
 </div>
 
 <div class="card">
-<h2>𝕏 X</h2>
-<p>Real-time information stream.</p>
-<a href="https://x.com" target="_blank">Open</a>
-</div>
+<h3>📚 Research</h3>
 
-<div class="card">
-<h2>📊 INSS</h2>
-<p>Security and strategic studies.</p>
-<a href="https://www.inss.org.il/" target="_blank">Open</a>
-</div>
+<div class="links">
 
-<div class="card">
-<h2>🇦🇪 ECSSR</h2>
-<p>Emirates Center for Strategic Studies.</p>
-<a href="https://www.ecssr.ae/en/home" target="_blank">Open</a>
+<a class="btn" href="https://www.inss.org.il/" target="_blank">
+INSS
+</a>
+
+<a class="btn" href="https://www.ecssr.ae/en/home" target="_blank">
+ECSSR
+</a>
+
+</div>
 </div>
 
 </div>
 
-<div class="footer">
-Operations Dashboard
 </div>
+
+<footer>
+Personal Operations Dashboard
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
+const map = L.map('map').setView([24,54],4);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19
+}).addTo(map);
+
 function updateClock(){
-const now = new Date();
 document.getElementById("clock").innerHTML =
-now.toUTCString();
+new Date().toUTCString();
 }
+
 updateClock();
 setInterval(updateClock,1000);
 </script>
 
 </body>
 </html>
+```
