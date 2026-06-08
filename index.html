@@ -42,7 +42,7 @@ color:#60a5fa;
 
 .container{
 display:grid;
-grid-template-columns:1.7fr 320px;
+grid-template-columns:1.5fr 420px;
 height:calc(100vh - 70px);
 }
 
@@ -124,7 +124,50 @@ allowfullscreen>
 </div>
 
 <div class="sidebar">
+<div class="card">
+<h3>⚡ الأخبار العاجلة</h3>
+<div id="feed1">Loading...</div>
+</div>
 
+<div class="card">
+<h3>🇮🇱 IL</h3>
+<div id="feed2">Loading...</div>
+</div>
+
+<div class="card">
+<h3>📡 Rybar</h3>
+<div id="feed3">Loading...</div>
+</div>
+
+<div class="card">
+<h3>🇮🇷 Tasnim</h3>
+<div id="feed4">Loading...</div>
+</div>
+
+<div class="card">
+<h3>🇮🇷 Fars</h3>
+<div id="feed5">Loading...</div>
+</div>
+
+<div class="card">
+<h3>📺 التلفزيون العربي</h3>
+<div id="feed6">Loading...</div>
+</div>
+
+<div class="card">
+<h3>📰 عربي21</h3>
+<div id="feed7">Loading...</div>
+</div>
+
+<div class="card">
+<h3>🚨 Critical Alerts</h3>
+<div id="feed8">Loading...</div>
+</div>
+
+<div class="card">
+<h3>🛡️ IDF</h3>
+<div id="feed9">Loading...</div>
+</div>
 <div class="card">
 <h3>🔥 NASA FIRMS</h3>
 <a class="btn"
@@ -193,8 +236,81 @@ new Date().toUTCString();
 updateClock();
 setInterval(updateClock,1000);
 
-</script>
+<script>
 
-</body>
-</html>
+function updateClock(){
+document.getElementById("clock").innerHTML =
+new Date().toUTCString();
+}
+
+updateClock();
+setInterval(updateClock,1000);
+
+const feeds = [
+"https://rss.app/feeds/gYNCvPrdFt7GIoOI.xml",
+"https://rss.app/feeds/dlnWKXZiUjO2nAQ4.xml",
+"https://rss.app/feeds/6fa52mOcMVt2f4qa.xml",
+"https://rss.app/feeds/T858onihfQLaGZcG.xml",
+"https://rss.app/feeds/B943N83JGSHxV0rK.xml",
+"https://rss.app/feeds/2ng0GD0OK9fAWPX2.xml",
+"https://rss.app/feeds/MA7tmoo0rzVIAL5X.xml",
+"https://rss.app/feeds/uUEQNytorNOLn9fr.xml",
+"https://rss.app/feeds/C6DBvvhzdNXULpSF.xml"
+];
+
+async function loadFeed(url,id){
+
+try{
+
+const response = await fetch(url);
+const xmlText = await response.text();
+
+const parser = new DOMParser();
+const xml = parser.parseFromString(xmlText,"text/xml");
+
+const items = xml.querySelectorAll("item");
+
+let html = "";
+
+for(let i=0;i<Math.min(items.length,3);i++){
+
+const title =
+items[i].querySelector("title")?.textContent || "";
+
+const link =
+items[i].querySelector("link")?.textContent || "#";
+
+html += `
+<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #1f2937;">
+<a href="${link}" target="_blank"
+style="color:#60a5fa;text-decoration:none;">
+${title}
+</a>
+</div>
+`;
+
+}
+
+document.getElementById(id).innerHTML = html;
+
+}
+catch(err){
+
+document.getElementById(id).innerHTML =
+"Feed Error";
+
+}
+
+}
+
+for(let i=0;i<feeds.length;i++){
+
+loadFeed(
+feeds[i],
+"feed"+(i+1)
+);
+
+}
+
+</script>
 ```
