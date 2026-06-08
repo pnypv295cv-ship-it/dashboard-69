@@ -178,3 +178,245 @@ setInterval(updateClock,1000);
 </body>
 </html>
 ```
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operations Dashboard</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:#0b1220;
+font-family:Arial,sans-serif;
+color:white;
+}
+
+header{
+padding:20px;
+text-align:center;
+border-bottom:1px solid #1f2937;
+background:#111827;
+}
+
+header h1{
+font-size:34px;
+}
+
+#clock{
+margin-top:10px;
+color:#60a5fa;
+font-size:18px;
+}
+
+.container{
+display:grid;
+grid-template-columns:1.2fr 1fr;
+gap:15px;
+padding:15px;
+height:calc(100vh - 110px);
+}
+
+#map{
+height:100%;
+border-radius:16px;
+overflow:hidden;
+border:1px solid #1f2937;
+}
+
+.sidebar{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+align-content:start;
+}
+
+.card{
+background:#111827;
+border:1px solid #1f2937;
+border-radius:16px;
+padding:20px;
+transition:0.3s;
+}
+
+.card:hover{
+border-color:#3b82f6;
+transform:translateY(-3px);
+}
+
+.card h3{
+margin-bottom:15px;
+font-size:20px;
+}
+
+.card p{
+margin-bottom:12px;
+color:#cbd5e1;
+}
+
+.btn{
+display:block;
+width:100%;
+text-align:center;
+text-decoration:none;
+background:#2563eb;
+color:white;
+padding:12px;
+border-radius:10px;
+margin-top:10px;
+font-weight:bold;
+}
+
+.btn:hover{
+background:#1d4ed8;
+}
+
+footer{
+text-align:center;
+padding:15px;
+color:#94a3b8;
+}
+
+@media(max-width:1000px){
+
+.container{
+grid-template-columns:1fr;
+height:auto;
+}
+
+#map{
+height:500px;
+}
+
+.sidebar{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🌍 Personal Operations Dashboard</h1>
+<div id="clock"></div>
+</header>
+
+<div class="container">
+
+<div id="map"></div>
+
+<div class="sidebar">
+
+<div class="card">
+<h3>🔥 NASA FIRMS</h3>
+<p>Satellite fire monitoring and wildfire detection.</p>
+
+<a class="btn"
+href="https://firms.modaps.eosdis.nasa.gov/map/"
+target="_blank">
+Open NASA FIRMS
+</a>
+</div>
+
+<div class="card">
+<h3>🛰️ LandViewer</h3>
+<p>Satellite imagery and Earth observation tools.</p>
+
+<a class="btn"
+href="https://eos.com/landviewer/"
+target="_blank">
+Open LandViewer
+</a>
+</div>
+
+<div class="card">
+<h3>✈️ Telegram</h3>
+<p>Communications and alerts.</p>
+
+<a class="btn"
+href="https://web.telegram.org"
+target="_blank">
+Open Telegram
+</a>
+</div>
+
+<div class="card">
+<h3>𝕏 X</h3>
+<p>Real-time information stream.</p>
+
+<a class="btn"
+href="https://x.com"
+target="_blank">
+Open X
+</a>
+</div>
+
+<div class="card">
+<h3>📊 INSS</h3>
+<p>Institute for National Security Studies.</p>
+
+<a class="btn"
+href="https://www.inss.org.il/"
+target="_blank">
+Open INSS
+</a>
+</div>
+
+<div class="card">
+<h3>🇦🇪 ECSSR</h3>
+<p>Emirates Center for Strategic Studies.</p>
+
+<a class="btn"
+href="https://www.ecssr.ae/en/home"
+target="_blank">
+Open ECSSR
+</a>
+</div>
+
+</div>
+
+</div>
+
+<footer>
+Operations Dashboard
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+const map = L.map('map').setView([24,54],4);
+
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+maxZoom:19
+}
+).addTo(map);
+
+function updateClock(){
+document.getElementById('clock').innerHTML =
+new Date().toUTCString();
+}
+
+updateClock();
+setInterval(updateClock,1000);
+
+</script>
+
+</body>
+</html>
+```
