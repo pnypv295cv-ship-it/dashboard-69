@@ -281,14 +281,18 @@ ${title}
 </a>
 </div>
 `;
-}
+    ;
 
-document.getElementById(id).innerHTML = html;
+  }
+
+  document.getElementById(id).innerHTML = html;
+
+}
 
 catch(err){
 
-document.getElementById(id).innerHTML =
-"Feed Error";
+  document.getElementById(id).innerHTML =
+  "Feed Error";
 
 }
 
@@ -296,10 +300,10 @@ document.getElementById(id).innerHTML =
 
 for(let i=0;i<feeds.length;i++){
 
-loadFeed(
-feeds[i],
-"feed"+(i+1)
-);
+  loadFeed(
+    feeds[i],
+    "feed"+(i+1)
+  );
 
 }
 
