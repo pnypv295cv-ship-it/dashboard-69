@@ -3,93 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Personal Operations Dashboard</title>
+<title>Operations Dashboard</title>
 
 <style>
-body{
-    margin:0;
-    background:#0d1117;
-    color:white;
-    font-family:Arial,sans-serif;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-h1{
-    text-align:center;
-    padding:25px;
+body{
+font-family:Arial,sans-serif;
+background:#0b1220;
+color:white;
+min-height:100vh;
+}
+
+.header{
+padding:25px;
+text-align:center;
+background:#111827;
+border-bottom:1px solid #1f2937;
+}
+
+.header h1{
+font-size:32px;
+}
+
+.header p{
+margin-top:8px;
+color:#9ca3af;
 }
 
 .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
-    padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+padding:25px;
+max-width:1400px;
+margin:auto;
 }
 
 .card{
-    background:#161b22;
-    border:1px solid #30363d;
-    border-radius:12px;
-    padding:20px;
-    transition:0.3s;
+background:#111827;
+border:1px solid #1f2937;
+border-radius:16px;
+padding:25px;
+transition:0.3s;
 }
 
 .card:hover{
-    transform:translateY(-4px);
+transform:translateY(-5px);
+border-color:#3b82f6;
 }
 
-a{
-    color:#58a6ff;
-    text-decoration:none;
+.card h2{
+margin-bottom:15px;
+font-size:22px;
 }
 
-h2{
-    margin-top:0;
+.card a{
+display:inline-block;
+margin-top:10px;
+text-decoration:none;
+background:#2563eb;
+color:white;
+padding:10px 18px;
+border-radius:10px;
+}
+
+.card a:hover{
+background:#1d4ed8;
+}
+
+.footer{
+text-align:center;
+padding:20px;
+color:#9ca3af;
+}
+
+.clock{
+font-size:18px;
+margin-top:10px;
+color:#60a5fa;
 }
 </style>
+
 </head>
 
 <body>
 
-<h1>Personal Operations Dashboard</h1>
+<div class="header">
+<h1>🌍 Personal Operations Dashboard</h1>
+<p>Monitoring & Intelligence Workspace</p>
+<div class="clock" id="clock"></div>
+</div>
 
 <div class="grid">
 
 <div class="card">
 <h2>🔥 NASA FIRMS</h2>
-<a href="https://firms.modaps.eosdis.nasa.gov/map/" target="_blank">Open NASA FIRMS</a>
+<p>Satellite fire monitoring.</p>
+<a href="https://firms.modaps.eosdis.nasa.gov/map/" target="_blank">Open</a>
 </div>
 
 <div class="card">
 <h2>🗺️ Google Maps</h2>
-<a href="https://maps.google.com" target="_blank">Open Google Maps</a>
+<p>Global mapping and navigation.</p>
+<a href="https://maps.google.com" target="_blank">Open</a>
 </div>
 
 <div class="card">
 <h2>🛰️ LandViewer</h2>
-<a href="https://eos.com/landviewer/" target="_blank">Open LandViewer</a>
+<p>Satellite imagery platform.</p>
+<a href="https://eos.com/landviewer/" target="_blank">Open</a>
 </div>
 
 <div class="card">
 <h2>✈️ Telegram</h2>
-<a href="https://web.telegram.org" target="_blank">Open Telegram</a>
+<p>Messaging and alerts.</p>
+<a href="https://web.telegram.org" target="_blank">Open</a>
 </div>
 
 <div class="card">
 <h2>𝕏 X</h2>
-<a href="https://x.com" target="_blank">Open X</a>
+<p>Real-time information stream.</p>
+<a href="https://x.com" target="_blank">Open</a>
 </div>
 
 <div class="card">
 <h2>📊 INSS</h2>
-<a href="https://www.inss.org.il/" target="_blank">Open INSS</a>
+<p>Security and strategic studies.</p>
+<a href="https://www.inss.org.il/" target="_blank">Open</a>
 </div>
 
 <div class="card">
 <h2>🇦🇪 ECSSR</h2>
-<a href="https://www.ecssr.ae/en/home" target="_blank">Open ECSSR</a>
+<p>Emirates Center for Strategic Studies.</p>
+<a href="https://www.ecssr.ae/en/home" target="_blank">Open</a>
 </div>
 
 </div>
+
+<div class="footer">
+Operations Dashboard
+</div>
+
+<script>
+function updateClock(){
+const now = new Date();
+document.getElementById("clock").innerHTML =
+now.toUTCString();
+}
+updateClock();
+setInterval(updateClock,1000);
+</script>
 
 </body>
 </html>
