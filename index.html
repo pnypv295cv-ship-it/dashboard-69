@@ -6,8 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Operations Dashboard</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
 <style>
 
 *{
@@ -20,71 +18,58 @@ body{
 background:#0b1220;
 font-family:Arial,sans-serif;
 color:white;
+height:100vh;
+overflow:hidden;
 }
 
 header{
-padding:15px;
+height:70px;
 background:#111827;
 border-bottom:1px solid #1f2937;
-text-align:center;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 20px;
+}
+
+header h1{
+font-size:26px;
 }
 
 #clock{
-margin-top:8px;
 color:#60a5fa;
-}
-
-.topbar{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-justify-content:center;
-padding:12px;
-background:#111827;
-}
-
-.topbar input{
-padding:10px;
-border:none;
-border-radius:8px;
-min-width:180px;
-}
-
-.topbar button{
-padding:10px 15px;
-border:none;
-border-radius:8px;
-background:#2563eb;
-color:white;
-cursor:pointer;
 }
 
 .container{
 display:grid;
-grid-template-columns:1.5fr 1fr;
-gap:12px;
-padding:12px;
-height:calc(100vh - 170px);
+grid-template-columns:1.7fr 320px;
+height:calc(100vh - 70px);
 }
 
-#map{
+.map-panel{
 height:100%;
-border-radius:12px;
-overflow:hidden;
+background:#000;
+}
+
+.map-panel iframe{
+width:100%;
+height:100%;
+border:none;
 }
 
 .sidebar{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-overflow:auto;
+background:#111827;
+border-left:1px solid #1f2937;
+overflow-y:auto;
+padding:12px;
 }
 
 .card{
-background:#111827;
+background:#0f172a;
 border:1px solid #1f2937;
 border-radius:12px;
 padding:15px;
+margin-bottom:12px;
 }
 
 .card h3{
@@ -93,8 +78,8 @@ margin-bottom:10px;
 
 .btn{
 display:block;
-text-align:center;
 text-decoration:none;
+text-align:center;
 background:#2563eb;
 color:white;
 padding:10px;
@@ -102,25 +87,18 @@ border-radius:8px;
 margin-top:8px;
 }
 
-.coords{
-margin-top:10px;
-color:#93c5fd;
-word-break:break-word;
+.btn:hover{
+background:#1d4ed8;
 }
 
 @media(max-width:1000px){
 
 .container{
 grid-template-columns:1fr;
-height:auto;
-}
-
-#map{
-height:500px;
 }
 
 .sidebar{
-grid-template-columns:1fr;
+height:auto;
 }
 
 }
@@ -130,211 +108,82 @@ grid-template-columns:1fr;
 <body>
 
 <header>
-<h1>🌍 Personal Operations Dashboard</h1>
+<h1>🌍 Operations Dashboard</h1>
 <div id="clock"></div>
 </header>
 
-<div class="topbar">
-
-<input id="searchBox" placeholder="Search city">
-
-<button onclick="searchPlace()">Search</button>
-
-<input id="latBox" placeholder="Latitude">
-
-<input id="lonBox" placeholder="Longitude">
-
-<button onclick="goToCoords()">Go</button>
-
-</div>
-
 <div class="container">
 
-<div id="map"></div>
+<div class="map-panel">
+
+<iframe
+src="https://experience.arcgis.com/experience/0d4bf9c05c2e4d9badced014fd872916"
+allowfullscreen>
+</iframe>
+
+</div>
 
 <div class="sidebar">
 
 <div class="card">
 <h3>🔥 NASA FIRMS</h3>
-<a class="btn" href="https://firms.modaps.eosdis.nasa.gov/map/" target="_blank">
-Open NASA FIRMS
+<a class="btn"
+href="https://firms.modaps.eosdis.nasa.gov/map/"
+target="_blank">
+Open
 </a>
 </div>
 
 <div class="card">
 <h3>🛰️ LandViewer</h3>
-<a class="btn" href="https://eos.com/landviewer/" target="_blank">
-Open LandViewer
+<a class="btn"
+href="https://eos.com/landviewer/"
+target="_blank">
+Open
 </a>
 </div>
 
 <div class="card">
 <h3>✈️ Telegram</h3>
-<a class="btn" href="https://web.telegram.org" target="_blank">
-Open Telegram
+<a class="btn"
+href="https://web.telegram.org"
+target="_blank">
+Open
 </a>
 </div>
 
 <div class="card">
 <h3>𝕏 X</h3>
-<a class="btn" href="https://x.com" target="_blank">
-Open X
+<a class="btn"
+href="https://x.com"
+target="_blank">
+Open
 </a>
 </div>
 
 <div class="card">
 <h3>📊 INSS</h3>
-<a class="btn" href="https://www.inss.org.il/" target="_blank">
-Open INSS
+<a class="btn"
+href="https://www.inss.org.il/"
+target="_blank">
+Open
 </a>
 </div>
 
 <div class="card">
 <h3>🇦🇪 ECSSR</h3>
-<a class="btn" href="https://www.ecssr.ae/en/home" target="_blank">
-Open ECSSR
+<a class="btn"
+href="https://www.ecssr.ae/en/home"
+target="_blank">
+Open
 </a>
 </div>
 
-<div class="card">
-<h3>📍 Coordinates</h3>
-
-<div id="coords" class="coords">
-Click on map
-</div>
-
-<button class="btn" onclick="copyCoords()">
-Copy Coordinates
-</button>
-
 </div>
 
 </div>
-
-</div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-
-const map = L.map('map').setView([24,54],4);
-
-const street = L.tileLayer(
-'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-{
-maxZoom:19
-}
-);
-
-const topo = L.tileLayer(
-'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-{
-maxZoom:17
-}
-);
-
-const dark = L.tileLayer(
-'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
-{
-maxZoom:20
-}
-);
-
-const satellite = L.tileLayer(
-'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-{
-maxZoom:19
-}
-);
-
-street.addTo(map);
-
-const baseMaps = {
-"Street Map": street,
-"Topographic": topo,
-"Dark Mode": dark,
-"Satellite": satellite
-};
-
-L.control.layers(baseMaps).addTo(map);
-
-let marker;
-let currentCoords="";
-
-map.on('click', function(e){
-
-const lat=e.latlng.lat.toFixed(6);
-const lon=e.latlng.lng.toFixed(6);
-
-currentCoords=lat + ", " + lon;
-
-document.getElementById("coords").innerHTML=currentCoords;
-
-if(marker){
-map.removeLayer(marker);
-}
-
-marker=L.marker([lat,lon]).addTo(map);
-
-});
-
-function copyCoords(){
-
-if(!currentCoords) return;
-
-navigator.clipboard.writeText(currentCoords);
-
-alert("Coordinates copied");
-
-}
-
-function goToCoords(){
-
-const lat=parseFloat(document.getElementById("latBox").value);
-const lon=parseFloat(document.getElementById("lonBox").value);
-
-if(isNaN(lat)||isNaN(lon)) return;
-
-map.setView([lat,lon],10);
-
-if(marker){
-map.removeLayer(marker);
-}
-
-marker=L.marker([lat,lon]).addTo(map);
-
-}
-
-async function searchPlace(){
-
-const q=document.getElementById("searchBox").value;
-
-if(!q) return;
-
-const res=await fetch(
-'https://nominatim.openstreetmap.org/search?format=json&q='
-+ encodeURIComponent(q)
-);
-
-const data=await res.json();
-
-if(!data.length){
-alert("Location not found");
-return;
-}
-
-const lat=parseFloat(data[0].lat);
-const lon=parseFloat(data[0].lon);
-
-map.setView([lat,lon],10);
-
-if(marker){
-map.removeLayer(marker);
-}
-
-marker=L.marker([lat,lon]).addTo(map);
-
-}
 
 function updateClock(){
 document.getElementById("clock").innerHTML =
