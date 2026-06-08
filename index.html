@@ -95,13 +95,6 @@ background:#1d4ed8;
 .container{
 grid-template-columns:1fr;
 }
-
-.sidebar{
-height:auto;
-}
-
-}
-
 </style>
 </head>
 <body>
@@ -123,6 +116,7 @@ allowfullscreen>
 </div>
 
 <div class="sidebar">
+
 <div class="card">
 <h3>⚡ الأخبار العاجلة</h3>
 <div id="feed1">Loading...</div>
@@ -167,6 +161,12 @@ allowfullscreen>
 <h3>🛡️ IDF</h3>
 <div id="feed9">Loading...</div>
 </div>
+
+<div class="card">
+<h3>📡 RT LIVE</h3>
+<div id="feed10">Loading...</div>
+</div>
+
 <div class="card">
 <h3>🔥 NASA FIRMS</h3>
 <a class="btn"
@@ -227,14 +227,7 @@ Open
 
 <script>
 
-function updateClock(){
-document.getElementById("clock").innerHTML =
-new Date().toUTCString();
-}
-
-updateClock();
-setInterval(updateClock,1000);
-
+<script>
 
 function updateClock(){
 document.getElementById("clock").innerHTML =
@@ -250,9 +243,10 @@ const feeds = [
 "https://rss.app/feeds/6fa52mOcMVt2f4qa.xml",
 "https://rss.app/feeds/T858onihfQLaGZcG.xml",
 "https://rss.app/feeds/B943N83JGSHxV0rK.xml",
-"https://rss.app/feeds/2ng0GD0OK9fAWPX2.xml",
+"https://rss.app/feeds/2ng0GD00K9fAWPX2.xml",
 "https://rss.app/feeds/MA7tmoo0rzVIAL5X.xml",
-"https://rss.app/feeds/uUEQNytorNOLn9fr.xml",
+"https://rss.app/feeds/uUEQNytorN0Ln9fr.xml",
+"https://rss.app/feeds/C6DBvvhzdNXULpSF.xml",
 "https://rss.app/feeds/8LAMeOgzDj0nYCiC.xml"
 ];
 
@@ -267,6 +261,12 @@ encodeURIComponent(url)
 
 const data = await response.json();
 
+if(!data.items){
+document.getElementById(id).innerHTML =
+"Feed Error";
+return;
+}
+
 let html = "";
 
 for(let i=0;i<Math.min(data.items.length,3);i++){
@@ -276,24 +276,21 @@ const link = data.items[i].link;
 
 html += `
 <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #1f2937;">
-<a href="${link}" target="_blank"
-style="color:#60a5fa;text-decoration:none;">
+<a href="${link}" target="_blank" style="color:#60a5fa;text-decoration:none;">
 ${title}
 </a>
 </div>
 `;
-    ;
-
-  }
-
-  document.getElementById(id).innerHTML = html;
 
 }
 
+document.getElementById(id).innerHTML = html;
+
+}
 catch(err){
 
-  document.getElementById(id).innerHTML =
-  "Feed Error";
+document.getElementById(id).innerHTML =
+"Feed Error";
 
 }
 
@@ -301,12 +298,25 @@ catch(err){
 
 for(let i=0;i<feeds.length;i++){
 
-  loadFeed(
-    feeds[i],
-    "feed"+(i+1)
-  );
+loadFeed(
+feeds[i],
+"feed"+(i+1)
+);
 
 }
+
+setInterval(()=>{
+
+for(let i=0;i<feeds.length;i++){
+
+loadFeed(
+feeds[i],
+"feed"+(i+1)
+);
+
+}
+
+},300000);
 
 </script>
 
